@@ -1,50 +1,78 @@
-import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 import React, { useState } from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
-  const [books, setBooks] = useState(null);
-
-  const apiUrl = "https://www.anapioficeandfire.com/api/books?pageSize=30";
+  // const [infos, setInfo] = useState(null);
+/** 
+  React.useEffect(() => {
+    axios
+        .get('/wordcount_api/wc/Aldarine')
+        .then(function(response){
+          console.log(response);
+        }) 
+        .catch(function (error){
+          console.log(error);
+        });
+  });
+*/
+  // add api url to a variable
+  //const apiUrl = "https://nanowrimo.org/wordcount_api/wc/Aldarine";
   
   const fetchData = async() => {
-    const response = await axios.get(apiUrl)
-    setBooks(response.data)
+
+    const response = await axios.get("/wordcount_api/wc/aldarine", {
+      "Content-Type": "application/xml; charset=utf-8"
+    })
+    // setInfo(response.data)
   }
+
+  render() {
+    const {aldarine} = this.state;
+
+    return(
+      <div>
+        {(aldarine && aldarine.length > 0) && 
+        aldarine.map((item) => {
+          return(
+            <span>{item.uname}</span>
+          )
+        })
+        }
+      </div>
+    );
+  }
+
+
+  /** 
 
   return (
     <div className="App">
-      <h1>Game of Thrones books</h1>
+      <h1>NaNoWriMo Details</h1>
      <div>
        <button className="fetch-button" onClick={fetchData}>
          Fetch Data
        </button>
      </div>
-     <div className="books">
-      {books &&
-        books.map((book, index) => {
-          const cleanedDate = new Date(book.released).toDateString();
-          const authors = book.authors.join(', ');
+     <div className="info">
+       {infos &&
+        infos.map((info, index) => {
 
           return(
-            <div className="book" key={index}>
-              <h3>Book {index + 1}</h3>
-              <h2>{book.name}</h2>
+            <div className="info" key={index}>
+              <h3>User {index + 1}</h3>
+              <h2>{info.uname}</h2>
 
               <div className="details">
-                <p>Authors: {authors}</p>
-                <p>Book: {book.numberOfPages}</p>
-                <p>Country: {book.country}</p>
-                <p>Date: {cleanedDate}</p>
+                <p>Word count: {info.user_wordcount}</p>
               </div>
             </div>
           );
         })}
      </div>
     </div>
-  );
+  );*/
 }
 
 export default App;
